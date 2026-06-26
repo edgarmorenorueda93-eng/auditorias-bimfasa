@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRO-SHE-15-FOR01 · Auditoría Efectiva · BIMFASA</title>
+<style>
+:root {
+  --navy: #0d2137;
+  --blue: #1a4a7a;
+  --blue-mid: #2563a8;
+  --blue-light: #e8f0fa;
+  --accent: #e85d24;
+  --green: #1a7a3a;
+  --green-light: #e6f4ec;
+  --yellow: #b37d00;
+  --yellow-light: #fff8e1;
+  --red: #9b1c1c;
+  --red-light: #fef2f2;
+  --gray: #4b5563;
+  --gray-light: #f3f4f6;
+  --border: #d1d5db;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --white: #ffffff;
+  --shadow: 0 1px 4px rgba(0,0,0,0.10);
+  --radius: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f0f4f8; color: var(--text); font-size: 14px; }
+
+/* ── HEADER ── */
+.app-header {
+  background: var(--navy);
+  color: white;
+  padding: 0;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.header-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; gap: 12px;
+}
+.logo-area { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.logo-box {
+  width: 44px; height: 44px; background: var(--blue-mid); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 11px; color: white; text-align: center;
+  line-height: 1.2; letter-spacing: 0.5px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.header-titles { flex: 1; }
+.header-titles h1 { font-size: 13px; font-weight: 700; letter-spacing: 0.3px; }
+.header-titles p { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+.folio-badge {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 5px; padding: 4px 10px; font-size: 11px; color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+}
+
+/* ── NAV TABS ── */
+.nav-tabs {
+  display: flex; background: rgba(0,0,0,0.25);
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 9px 18px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6);
+  border: none; background: none; cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all 0.15s; letter-spacing: 0.3px;
+}
+.nav-tab.active { color: white; border-bottom-color: #4da6ff; }
+.nav-tab:hover:not(.active) { color: rgba(255,255,255,0.85); }
+
+/* ── MAIN ── */
+main { max-width: 720px; margin: 0 auto; padding: 16px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── CARDS ── */
+.card {
+  background: white; border-radius: var(--radius); border: 1px solid var(--border);
+  box-shadow: var(--shadow); margin-bottom: 14px; overflow: hidden;
+}
+.card-header {
+  background: var(--blue); color: white;
+  padding: 10px 16px; display: flex; align-items: center; gap: 8px;
+}
+.card-header h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.3px; }
+.card-header .badge {
+  margin-left: auto; background: rgba(255,255,255,0.15); border-radius: 4px;
+  padding: 2px 8px; font-size: 11px;
+}
+.card-body { padding: 14px 16px; }
+
+/* ── FORM ELEMENTS ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 520px) {
+  .form-grid, .form-grid.cols3 { grid-template-columns: 1fr; }
+}
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field.full { grid-column: 1 / -1; }
+label { font-size: 11px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; }
+input, select, textarea {
+  border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+  font-size: 13px; color: var(--text); background: white;
+  transition: border-color 0.15s; width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(37,99,168,0.12);
+}
+textarea { resize: vertical; min-height: 70px; }
+
+/* ── TIPO AUDITORIA ── */
+.tipo-selector { display: flex; gap: 8px; }
+.tipo-btn {
+  flex: 1; padding: 8px; border: 1.5px solid var(--border); border-radius: 6px;
+  background: white; cursor: pointer; text-align: center; font-size: 12px; font-weight: 600;
+  color: var(--gray); transition: all 0.15s;
+}
+.tipo-btn.selected { border-color: var(--blue-mid); background: var(--blue-light); color: var(--blue); }
+
+/* ── CATEGORÍAS ── */
+.cat-section { margin-bottom: 12px; }
+.cat-title {
+  background: var(--blue-light); border-left: 3px solid var(--blue-mid);
+  padding: 8px 12px; font-size: 12px; font-weight: 700; color: var(--blue);
+  letter-spacing: 0.3px; display: flex; justify-content: space-between; align-items: center;
+}
+.cat-subtotal { font-size: 11px; font-weight: 400; color: var(--blue-mid); }
+.obs-row {
+  display: grid; grid-template-columns: 1fr 80px 96px 96px 80px;
+  align-items: center; gap: 0;
+  border-bottom: 1px solid var(--gray-light); padding: 0;
+}
+.obs-row:last-child { border-bottom: none; }
+.obs-name {
+  padding: 9px 12px; font-size: 12px; color: var(--text);
+  border-right: 1px solid var(--gray-light);
+}
+.obs-cell {
+  padding: 6px 8px; border-right: 1px solid var(--gray-light);
+  display: flex; align-items: center; justify-content: center;
+}
+.obs-cell:last-child { border-right: none; }
+.col-header {
+  background: #f9fafb; font-size: 10px; font-weight: 700;
+  color: var(--text-muted); text-align: center; padding: 6px 4px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.counter-group { display: flex; align-items: center; gap: 4px; }
+.cnt-btn {
+  width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border);
+  background: white; cursor: pointer; font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; color: var(--blue);
+  transition: background 0.1s; flex-shrink: 0; line-height: 1;
+}
+.cnt-btn:hover { background: var(--blue-light); }
+.cnt-val {
+  width: 28px; text-align: center; font-size: 13px; font-weight: 700; color: var(--text);
+}
+.fs-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px;
+  text-align: center;
+}
+.fs-low { background: #e6f4ec; color: #1a7a3a; }
+.fs-mid { background: #fff3cd; color: #856404; }
+.fs-hi { background: #fde8e8; color: var(--red); }
+.ai-fs-val {
+  font-size: 13px; font-weight: 700; text-align: center; color: var(--text);
+  min-width: 40px;
+}
+
+/* ── IAS METER ── */
+.ias-panel {
+  border-radius: var(--radius); padding: 16px; text-align: center;
+  border: 2px solid var(--border); transition: all 0.3s; margin-bottom: 14px;
+}
+.ias-panel.seguro { background: var(--green-light); border-color: var(--green); }
+.ias-panel.preventivo { background: var(--yellow-light); border-color: var(--yellow); }
+.ias-panel.inaceptable { background: var(--red-light); border-color: var(--red); }
+.ias-value { font-size: 42px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+.ias-panel.seguro .ias-value { color: var(--green); }
+.ias-panel.preventivo .ias-value { color: var(--yellow); }
+.ias-panel.inaceptable .ias-value { color: var(--red); }
+.ias-label { font-size: 15px; font-weight: 700; margin-top: 4px; }
+.ias-panel.seguro .ias-label { color: var(--green); }
+.ias-panel.preventivo .ias-label { color: var(--yellow); }
+.ias-panel.inaceptable .ias-label { color: var(--red); }
+.ias-sub { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+.ias-formula { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* ── REVERSO / OBSERVACIONES ── */
+.obs-list { list-style: none; }
+.obs-item {
+  display: grid; grid-template-columns: 28px 1fr;
+  gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--gray-light); align-items: start;
+}
+.obs-item:last-child { border-bottom: none; }
+.obs-num {
+  width: 24px; height: 24px; border-radius: 50%; background: var(--blue-light);
+  color: var(--blue); font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+}
+.obs-inputs { display: flex; flex-direction: column; gap: 6px; }
+
+/* ── ACCIONES CORRECTIVAS ── */
+.accion-row {
+  display: grid; grid-template-columns: 28px 1fr 1fr 130px;
+  gap: 8px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--gray-light);
+}
+@media (max-width: 560px) { .accion-row { grid-template-columns: 28px 1fr; } }
+.accion-row:last-child { border-bottom: none; }
+
+/* ── RESUMEN INFORME ── */
+.resumen-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px;
+}
+@media (max-width: 500px) { .resumen-grid { grid-template-columns: 1fr 1fr; } }
+.resumen-item {
+  background: var(--gray-light); border-radius: 6px; padding: 10px 8px; text-align: center;
+}
+.resumen-item .num { font-size: 20px; font-weight: 800; color: var(--blue); }
+.resumen-item .lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; line-height: 1.3; }
+
+/* ── FIRMAS ── */
+.firma-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .firma-row { grid-template-columns: 1fr; } }
+.firma-box {
+  border: 1px solid var(--border); border-radius: 6px; padding: 12px;
+  text-align: center;
+}
+.firma-line { border-top: 1.5px solid var(--text); margin: 24px 8px 6px; }
+.firma-label { font-size: 11px; color: var(--text-muted); }
+
+/* ── BOTONES ── */
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.btn {
+  padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.88; }
+.btn-primary { background: var(--blue); color: white; }
+.btn-success { background: var(--green); color: white; }
+.btn-danger { background: var(--accent); color: white; }
+.btn-ghost { background: white; color: var(--gray); border: 1px solid var(--border); }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ── HISTORIAL ── */
+.hist-item {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  padding: 12px 14px; border-bottom: 1px solid var(--gray-light); gap: 10px;
+  cursor: pointer; transition: background 0.1s;
+}
+.hist-item:hover { background: var(--blue-light); }
+.hist-item:last-child { border-bottom: none; }
+.hist-area { font-size: 13px; font-weight: 700; color: var(--text); }
+.hist-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.hist-ias {
+  font-size: 18px; font-weight: 800; padding: 4px 10px; border-radius: 6px;
+}
+.ias-chip-s { background: var(--green-light); color: var(--green); }
+.ias-chip-p { background: var(--yellow-light); color: var(--yellow); }
+.ias-chip-i { background: var(--red-light); color: var(--red); }
+.empty-state { padding: 32px; text-align: center; color: var(--text-muted); font-size: 13px; }
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; font-size: 11px; }
+  .app-header, .nav-tabs, .btn-row, .cnt-btn { display: none !important; }
+  .tab-panel { display: block !important; }
+  #tab-historial, #tab-dashboard { display: none !important; }
+  main { padding: 0; max-width: none; }
+  .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-bottom: 8px; }
+  .card-header { background: #1a4a7a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ias-panel { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ── DASHBOARD ── */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+@media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+.stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
+.stat-num { font-size: 28px; font-weight: 800; color: var(--blue); }
+.stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+
+.chart-wrap { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.chart-wrap h3 { font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 12px; }
+svg.trend { width: 100%; overflow: visible; }
+
+.alert-box {
+  padding: 10px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.alert-success { background: var(--green-light); color: var(--green); border: 1px solid #a7d7b8; }
+.alert-warn { background: var(--yellow-light); color: var(--yellow); border: 1px solid #f0d080; }
+.alert-danger { background: var(--red-light); color: var(--red); border: 1px solid #f5b8b8; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-top">
+    <div class="logo-area">
+      <div class="logo-box">BIM<br>FASA</div>
+      <div class="header-titles">
+        <h1>Auditoría Efectiva</h1>
+        <p>PRO-SHE-15-FOR01 · Rev. 01</p>
+      </div>
+    </div>
+    <div class="folio-badge" id="folio-badge">Folio: —</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('encabezado')">1 · Encabezado</button>
+    <button class="nav-tab" onclick="showTab('anverso')">2 · Registro</button>
+    <button class="nav-tab" onclick="showTab('reverso')">3 · Observaciones</button>
+    <button class="nav-tab" onclick="showTab('informe')">4 · Informe</button>
+    <button class="nav-tab" onclick="showTab('historial')">📋 Historial</button>
+    <button class="nav-tab" onclick="showTab('dashboard')">📊 Dashboard</button>
+  </div>
+</div>
+
+<main>
+
+<!-- ══ TAB 1: ENCABEZADO ══ -->
+<div id="tab-encabezado" class="tab-panel active">
+  <div class="card">
+    <div class="card-header"><h2>Datos de la auditoría</h2></div>
+    <div class="card-body">
+      <div class="field" style="margin-bottom:12px">
+        <label>Tipo de auditoría</label>
+        <div class="tipo-selector">
+          <button class="tipo-btn selected" id="tipo-interna" onclick="setTipo('Interna')">Interna</button>
+          <button class="tipo-btn" id="tipo-externa" onclick="setTipo('Externa')">Externa</button>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Departamento auditado</label>
+          <select id="depto">
+            <option value="">— Seleccionar —</option>
+            <option>Jerky</option>
+            <option>Gomitas</option>
+            <option>Almacén</option>
+            <option>Mantenimiento</option>
+            <option>Empaque</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Área supervisada</label>
+          <input type="text" id="area" placeholder="Ej. Línea 2 — Jerky">
+        </div>
+        <div class="field">
+          <label>Fecha</label>
+          <input type="date" id="fecha">
+        </div>
+        <div class="field">
+          <label>Hora</label>
+          <input type="time" id="hora">
+        </div>
+        <div class="field full">
+          <label>Nombre del supervisor de turno</label>
+          <input type="text" id="supervisor" placeholder="Nombre completo">
+        </div>
+        <div class="field full">
+          <label>Responsable de la auditoría</label>
+          <input type="text" id="auditor" placeholder="Nombre completo">
+        </div>
+        <div class="field">
+          <label>No. de personas observadas</label>
+          <input type="number" id="personas" min="1" value="" placeholder="0" oninput="calcIAS()">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="showTab('anverso')">Continuar al registro →</button>
+  </div>
+</div>
+
+<!-- ══ TAB 2: ANVERSO — REGISTRO ══ -->
+<div id="tab-anverso" class="tab-panel">
+
+  <!-- IAS en tiempo real -->
+  <div class="ias-panel" id="ias-panel">
+    <div class="ias-value" id="ias-value">100.0%</div>
+    <div class="ias-label" id="ias-label">SEGURO</div>
+    <div class="ias-sub" id="ias-sub">Sin actos inseguros registrados</div>
+    <div class="ias-formula" id="ias-formula">IAS = 100 − (Σ AI×FS / personas) × 100</div>
+  </div>
+
+  <!-- CATEGORÍA 1 -->
+  <div class="card cat-section">
+    <div class="cat-title">
+      1 · Acciones y reacciones de las personas
+      <span class="cat-subtotal" id="sub1">AI·FS = 0</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th class="col-header obs-name" style="text-align:left;min-width:180px">Criterio</th>
+          <th class="col-header" style="width:86px">FS 0.33<br><span class="fs-badge fs-low">Bajo</span></th>
+          <th class="col-header" style="width:86px">FS 1<br><span class="fs-badge fs-mid">Medio</span></th>
+          <th class="col-header" style="width:86px">FS 3<br><span class="fs-badge fs-hi">Alto</span></th>
+          <th class="col-header" style="width:72px">AI×FS</th>
+        </tr>
+      </thead>
+      <tbody id="cat1-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- CATEGORÍA 2 -->
+  <div class="card cat-section">
+    <div class="cat-title">
+      2 · Equipo de protección personal (EPP)
+      <span class="cat-subtotal" id="sub2">AI·FS = 0</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th class="col-header obs-name" style="text-align:left;min-width:180px">Criterio</th>
+          <th class="col-header" style="width:86px">FS 0.33<br><span class="fs-badge fs-low">Bajo</span></th>
+          <th class="col-header" style="width:86px">FS 1<br><span class="fs-badge fs-mid">Medio</span></th>
+          <th class="col-header" style="width:86px">FS 3<br><span class="fs-badge fs-hi">Alto</span></th>
+          <th class="col-header" style="width:72px">AI×FS</th>
+        </tr>
+      </thead>
+      <tbody id="cat2-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- CATEGORÍA 3 -->
+  <div class="card cat-section">
+    <div class="cat-title">
+      3 · Posiciones de las personas
+      <span class="cat-subtotal" id="sub3">AI·FS = 0</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th class="col-header obs-name" style="text-align:left;min-width:180px">Criterio</th>
+          <th class="col-header" style="width:86px">FS 0.33<br><span class="fs-badge fs-low">Bajo</span></th>
+          <th class="col-header" style="width:86px">FS 1<br><span class="fs-badge fs-mid">Medio</span></th>
+          <th class="col-header" style="width:86px">FS 3<br><span class="fs-badge fs-hi">Alto</span></th>
+          <th class="col-header" style="width:72px">AI×FS</th>
+        </tr>
+      </thead>
+      <tbody id="cat3-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- CATEGORÍA 4 -->
+  <div class="card cat-section">
+    <div class="cat-title">
+      4 · Herramientas y equipo
+      <span class="cat-subtotal" id="sub4">AI·FS = 0</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th class="col-header obs-name" style="text-align:left;min-width:180px">Criterio</th>
+          <th class="col-header" style="width:86px">FS 0.33<br><span class="fs-badge fs-low">Bajo</span></th>
+          <th class="col-header" style="width:86px">FS 1<br><span class="fs-badge fs-mid">Medio</span></th>
+          <th class="col-header" style="width:86px">FS 3<br><span class="fs-badge fs-hi">Alto</span></th>
+          <th class="col-header" style="width:72px">AI×FS</th>
+        </tr>
+      </thead>
+      <tbody id="cat4-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- CATEGORÍA 5 -->
+  <div class="card cat-section">
+    <div class="cat-title">
+      5 · Procedimientos, orden y limpieza
+      <span class="cat-subtotal" id="sub5">AI·FS = 0</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th class="col-header obs-name" style="text-align:left;min-width:180px">Criterio</th>
+          <th class="col-header" style="width:86px">FS 0.33<br><span class="fs-badge fs-low">Bajo</span></th>
+          <th class="col-header" style="width:86px">FS 1<br><span class="fs-badge fs-mid">Medio</span></th>
+          <th class="col-header" style="width:86px">FS 3<br><span class="fs-badge fs-hi">Alto</span></th>
+          <th class="col-header" style="width:72px">AI×FS</th>
+        </tr>
+      </thead>
+      <tbody id="cat5-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="showTab('encabezado')">← Encabezado</button>
+    <button class="btn btn-primary" onclick="showTab('reverso')">Continuar →</button>
+  </div>
+</div>
+
+<!-- ══ TAB 3: REVERSO — OBSERVACIONES ══ -->
+<div id="tab-reverso" class="tab-panel">
+  <div class="card">
+    <div class="card-header"><h2>Registro de actos inseguros (AI)</h2></div>
+    <div class="card-body">
+      <ul class="obs-list" id="ai-list"></ul>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>Registro de condiciones inseguras (CI)</h2></div>
+    <div class="card-body">
+      <ul class="obs-list" id="ci-list"></ul>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>Observaciones generales</h2></div>
+    <div class="card-body">
+      <textarea id="obs-generales" placeholder="Reconocimientos, situaciones especiales, contexto de la auditoría…" style="min-height:80px"></textarea>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="showTab('anverso')">← Registro</button>
+    <button class="btn btn-primary" onclick="showTab('informe')">Continuar al informe →</button>
+  </div>
+</div>
+
+<!-- ══ TAB 4: INFORME FINAL ══ -->
+<div id="tab-informe" class="tab-panel">
+
+  <!-- Resumen por categoría -->
+  <div class="card">
+    <div class="card-header"><h2>Resumen por categoría — actos inseguros corregidos</h2></div>
+    <div class="card-body">
+      <div class="resumen-grid" id="resumen-cats"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field">
+          <label>Total actos inseguros (AI×FS)</label>
+          <input type="text" id="r-total-ai" readonly style="background:var(--gray-light);font-weight:700">
+        </div>
+        <div class="field">
+          <label>Total recomendaciones</label>
+          <input type="number" id="r-total-recs" min="0" value="0">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones correctivas -->
+  <div class="card">
+    <div class="card-header"><h2>Acciones correctivas</h2></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:28px 1fr 1fr 130px;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:10px;color:var(--text-muted);font-weight:700;text-transform:uppercase">#</span>
+        <span style="font-size:10px;color:var(--text-muted);font-weight:700;text-transform:uppercase">Recomendación</span>
+        <span style="font-size:10px;color:var(--text-muted);font-weight:700;text-transform:uppercase">Responsable</span>
+        <span style="font-size:10px;color:var(--text-muted);font-weight:700;text-transform:uppercase">Fecha compromiso</span>
+      </div>
+      <div id="acciones-list"></div>
+    </div>
+  </div>
+
+  <!-- IAS final -->
+  <div class="ias-panel" id="ias-panel-final">
+    <div class="ias-value" id="ias-value-final">100.0%</div>
+    <div class="ias-label" id="ias-label-final">SEGURO</div>
+    <div class="ias-sub" id="ias-sub-final">Desempeño en seguridad</div>
+  </div>
+
+  <!-- Firmas -->
+  <div class="card">
+    <div class="card-header"><h2>Firmas</h2></div>
+    <div class="card-body">
+      <div class="firma-row">
+        <div class="firma-box">
+          <div class="firma-line"></div>
+          <div id="firma-sup" style="font-size:12px;font-weight:700;color:var(--text)">—</div>
+          <div class="firma-label">Supervisor de turno</div>
+        </div>
+        <div class="firma-box">
+          <div class="firma-line"></div>
+          <div id="firma-aud" style="font-size:12px;font-weight:700;color:var(--text)">—</div>
+          <div class="firma-label">Responsable de auditoría</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="showTab('reverso')">← Observaciones</button>
+    <button class="btn btn-success" onclick="guardarAuditoria()">💾 Guardar auditoría</button>
+    <button class="btn btn-primary" onclick="window.print()">🖨 Imprimir / PDF</button>
+    <button class="btn btn-danger" onclick="nuevaAuditoria()">+ Nueva auditoría</button>
+  </div>
+</div>
+
+<!-- ══ TAB 5: HISTORIAL ══ -->
+<div id="tab-historial" class="tab-panel">
+  <div class="card">
+    <div class="card-header"><h2>Auditorías guardadas</h2><span class="badge" id="hist-count">0</span></div>
+    <div id="historial-lista"><div class="empty-state">Aún no hay auditorías guardadas.</div></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-ghost btn-full" onclick="exportarCSV()">⬇ Exportar todo a CSV</button>
+  </div>
+</div>
+
+<!-- ══ TAB 6: DASHBOARD ══ -->
+<div id="tab-dashboard" class="tab-panel">
+  <div class="stat-grid" id="dash-stats"></div>
+  <div class="chart-wrap" id="dash-chart">
+    <h3>Tendencia IAS por auditoría</h3>
+    <svg class="trend" id="trend-svg" height="140"></svg>
+    <div id="dash-empty" class="empty-state" style="display:none">Registra al menos 2 auditorías para ver la tendencia.</div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── DATA ──
+const CATEGORIAS = [
+  {
+    id: 1, nombre: "Acciones y reacciones de las personas",
+    items: [
+      "Ajustan o colocan su equipo de protección personal",
+      "Cambian de posición",
+      "Reacomodan su trabajo",
+      "Dejan de trabajar",
+      "Aterrizan su equipo",
+      "Fuera de posición",
+      "Personal haciendo varias actividades por ausentismo"
+    ]
+  },
+  {
+    id: 2, nombre: "Equipo de protección personal (EPP)",
+    items: ["Cabeza","Ojos y cara","Oídos","Aparato respiratorio","Brazos y manos","Tronco","Piernas y pies"]
+  },
+  {
+    id: 3, nombre: "Posiciones de las personas",
+    items: [
+      "Golpear contra objetos o ser golpeado por objetos",
+      "Quedar atrapado dentro, entre o sobre objetos/equipos",
+      "Caídas",
+      "Contacto con temperaturas extremas",
+      "Contacto con corriente eléctrica",
+      "Inhalación/absorción/ingestión de sustancia peligrosa",
+      "Sobreesfuerzos",
+      "Movimientos repetitivos",
+      "Posiciones incómodas y posturas estáticas"
+    ]
+  },
+  {
+    id: 4, nombre: "Herramientas y equipo",
+    items: [
+      "Uso de equipo y herramientas incorrectas para el trabajo",
+      "Uso de equipo y herramientas empleados en forma incorrecta",
+      "Uso de equipo y herramientas en condiciones inseguras",
+      "No cuentan con herramienta y/o equipo adecuado"
+    ]
+  },
+  {
+    id: 5, nombre: "Procedimientos, orden y limpieza",
+    items: [
+      "Procedimientos no disponibles",
+      "Procedimientos no comunicados ni entendidos",
+      "Procedimientos no aplicados en campo",
+      "Orden y limpieza inadecuada para el trabajo",
+      "Falta de acomodo de equipos y materiales",
+      "Orden y limpieza realizándose en condiciones inseguras",
+      "Manejo inadecuado de desechos"
+    ]
+  }
+];
+
+const FS_VALS = [1/3, 1, 3];
+let counters = {}; // key: "cat_item_fs" → count
+let tipoAuditoria = 'Interna';
+
+// ── INIT ──
+function init() {
+  const now = new Date();
+  document.getElementById('fecha').value = now.toISOString().split('T')[0];
+  document.getElementById('hora').value = now.toTimeString().slice(0,5);
+  generarFolio();
+  buildTables();
+  buildObsLists();
+  buildAccionesList();
+  buildResumen();
+  renderHistorial();
+  renderDashboard();
+}
+
+function generarFolio() {
+  const d = new Date();
+  const folio = 'AE-' + d.getFullYear() +
+    String(d.getMonth()+1).padStart(2,'0') +
+    String(d.getDate()).padStart(2,'0') + '-' +
+    String(Math.floor(Math.random()*900)+100);
+  document.getElementById('folio-badge').textContent = 'Folio: ' + folio;
+  return folio;
+}
+
+// ── TABS ──
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  const tabs = ['encabezado','anverso','reverso','informe','historial','dashboard'];
+  const idx = tabs.indexOf(name);
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  if (name === 'informe') syncInforme();
+  if (name === 'historial') renderHistorial();
+  if (name === 'dashboard') renderDashboard();
+}
+
+function setTipo(t) {
+  tipoAuditoria = t;
+  document.getElementById('tipo-interna').classList.toggle('selected', t==='Interna');
+  document.getElementById('tipo-externa').classList.toggle('selected', t==='Externa');
+}
+
+// ── BUILD TABLES ──
+function buildTables() {
+  CATEGORIAS.forEach(cat => {
+    const tbody = document.getElementById('cat'+cat.id+'-body');
+    tbody.innerHTML = '';
+    cat.items.forEach((item, ii) => {
+      const tr = document.createElement('tr');
+      tr.style.borderBottom = '1px solid #f3f4f6';
+      let cells = `<td class="obs-name">${item}</td>`;
+      FS_VALS.forEach((fs, fi) => {
+        const key = `${cat.id}_${ii}_${fi}`;
+        counters[key] = 0;
+        cells += `<td class="obs-cell">
+          <div class="counter-group">
+            <button class="cnt-btn" onclick="changeCount('${key}',-1)">−</button>
+            <div class="cnt-val" id="cnt-${key}">0</div>
+            <button class="cnt-btn" onclick="changeCount('${key}',1)">+</button>
+          </div>
+        </td>`;
+      });
+      cells += `<td class="obs-cell"><div class="ai-fs-val" id="aifs-${cat.id}-${ii}">0</div></td>`;
+      tr.innerHTML = cells;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function changeCount(key, delta) {
+  counters[key] = Math.max(0, (counters[key]||0) + delta);
+  document.getElementById('cnt-'+key).textContent = counters[key];
+  const [catId, itemId] = key.split('_').map(Number);
+  updateRowTotal(catId, itemId);
+  calcIAS();
+}
+
+function updateRowTotal(catId, itemId) {
+  let total = 0;
+  FS_VALS.forEach((fs, fi) => {
+    total += (counters[`${catId}_${itemId}_${fi}`]||0) * fs;
+  });
+  document.getElementById(`aifs-${catId}-${itemId}`).textContent = total.toFixed(2).replace(/\.00$/,'').replace(/(\.\d)0$/,'$1');
+}
+
+// ── IAS CALC ──
+function calcIAS() {
+  const personas = parseInt(document.getElementById('personas').value) || 0;
+  let totalAIFS = 0;
+  CATEGORIAS.forEach(cat => {
+    let catTotal = 0;
+    cat.items.forEach((_, ii) => {
+      FS_VALS.forEach((fs, fi) => {
+        catTotal += (counters[`${cat.id}_${ii}_${fi}`]||0) * fs;
+      });
+    });
+    document.getElementById('sub'+cat.id).textContent = 'AI·FS = ' + catTotal.toFixed(2).replace(/\.00$/,'');
+    totalAIFS += catTotal;
+  });
+
+  let ias = 100;
+  let iaiStr = '0.000';
+  if (personas > 0) {
+    const iai = (totalAIFS / personas) * 100;
+    ias = 100 - iai;
+    iaiStr = iai.toFixed(3);
+  }
+
+  const iasStr = ias.toFixed(1);
+  let nivel = 'seguro', label = 'SEGURO';
+  if (ias <= 95) { nivel = 'inaceptable'; label = 'INACEPTABLE'; }
+  else if (ias <= 98) { nivel = 'preventivo'; label = 'PREVENTIVO'; }
+
+  ['ias-panel','ias-panel-final'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = 'ias-panel ' + nivel;
+  });
+  ['ias-value','ias-value-final'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = iasStr + '%';
+  });
+  ['ias-label','ias-label-final'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = label;
+  });
+  document.getElementById('ias-sub').textContent =
+    personas > 0
+      ? `IAI = ${iaiStr} | Personas observadas: ${personas} | AI×FS total: ${totalAIFS.toFixed(2)}`
+      : 'Ingresa el número de personas observadas';
+  document.getElementById('ias-sub-final').textContent =
+    `Personas: ${personas} | AI×FS: ${totalAIFS.toFixed(2)}`;
+
+  return { ias: parseFloat(iasStr), nivel, totalAIFS };
+}
+
+// ── OBS LISTS ──
+function buildObsLists() {
+  ['ai','ci'].forEach(type => {
+    const ul = document.getElementById(type+'-list');
+    ul.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const li = document.createElement('li');
+      li.className = 'obs-item';
+      li.innerHTML = `
+        <div class="obs-num">${i}</div>
+        <div class="obs-inputs">
+          <input type="text" id="${type}-desc-${i}" placeholder="${type==='ai'?'Descripción del acto inseguro':'Descripción de la condición insegura'}">
+        </div>`;
+      ul.appendChild(li);
+    }
+  });
+}
+
+function buildAccionesList() {
+  const cont = document.getElementById('acciones-list');
+  cont.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const div = document.createElement('div');
+    div.className = 'accion-row';
+    div.innerHTML = `
+      <div class="obs-num">${i}</div>
+      <input type="text" id="ac-rec-${i}" placeholder="Recomendación">
+      <input type="text" id="ac-resp-${i}" placeholder="Responsable">
+      <input type="date" id="ac-fecha-${i}">`;
+    cont.appendChild(div);
+  }
+}
+
+function buildResumen() {
+  const grid = document.getElementById('resumen-cats');
+  grid.innerHTML = '';
+  CATEGORIAS.forEach(cat => {
+    const short = ['Acc/Reacc.','EPP','Posiciones','Herram.','Proced./OL'];
+    const div = document.createElement('div');
+    div.className = 'resumen-item';
+    div.innerHTML = `<div class="num" id="res-cat-${cat.id}">0</div><div class="lbl">${short[cat.id-1]}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+// ── SYNC INFORME ──
+function syncInforme() {
+  const { ias } = calcIAS();
+  CATEGORIAS.forEach(cat => {
+    let catTotal = 0;
+    cat.items.forEach((_, ii) => {
+      FS_VALS.forEach((fs, fi) => {
+        catTotal += (counters[`${cat.id}_${ii}_${fi}`]||0) * fs;
+      });
+    });
+    const el = document.getElementById('res-cat-'+cat.id);
+    if (el) el.textContent = catTotal.toFixed(2).replace(/\.00$/,'');
+  });
+
+  let tot = 0;
+  CATEGORIAS.forEach(cat => {
+    cat.items.forEach((_, ii) => {
+      FS_VALS.forEach((fs, fi) => {
+        tot += (counters[`${cat.id}_${ii}_${fi}`]||0) * fs;
+      });
+    });
+  });
+  document.getElementById('r-total-ai').value = tot.toFixed(2).replace(/\.00$/,'') || '0';
+
+  const sup = document.getElementById('supervisor').value || '—';
+  const aud = document.getElementById('auditor').value || '—';
+  document.getElementById('firma-sup').textContent = sup;
+  document.getElementById('firma-aud').textContent = aud;
+}
+
+// ── GOOGLE SHEETS ──
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzI6pLdQ_FvakL00opRQF1pgs4pXUGGR10auJmcXoqM-GB_MIa2a97d80wu8t8JVAiPGg/exec';
+
+async function enviarASheets(rec) {
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        folio: rec.folio,
+        tipo: rec.tipo,
+        depto: rec.depto,
+        area: rec.area,
+        fecha: rec.fecha,
+        hora: rec.hora,
+        supervisor: rec.supervisor,
+        auditor: rec.auditor,
+        personas: rec.personas,
+        totalAIFS: rec.totalAIFS,
+        ias: rec.ias,
+        nivel: rec.nivel,
+        obs: rec.obs,
+        guardadoEn: rec.guardadoEn
+      })
+    });
+    return true;
+  } catch(e) {
+    console.warn('Sheets sync error:', e);
+    return false;
+  }
+}
+
+// ── GUARDAR ──
+async function guardarAuditoria() {
+  const { ias, nivel, totalAIFS } = calcIAS();
+  const personas = parseInt(document.getElementById('personas').value)||0;
+  const depto = document.getElementById('depto').value;
+  const fecha = document.getElementById('fecha').value;
+
+  if (!depto || !fecha || !document.getElementById('supervisor').value) {
+    alert('Completa al menos: departamento, fecha y supervisor antes de guardar.');
+    return;
+  }
+
+  const folio = document.getElementById('folio-badge').textContent.replace('Folio: ','');
+  const rec = {
+    folio, tipo: tipoAuditoria,
+    depto, area: document.getElementById('area').value,
+    fecha, hora: document.getElementById('hora').value,
+    supervisor: document.getElementById('supervisor').value,
+    auditor: document.getElementById('auditor').value,
+    personas, totalAIFS, ias, nivel,
+    counters: {...counters},
+    ai: Array.from({length:5},(_,i)=>document.getElementById('ai-desc-'+(i+1)).value),
+    ci: Array.from({length:5},(_,i)=>document.getElementById('ci-desc-'+(i+1)).value),
+    obs: document.getElementById('obs-generales').value,
+    acciones: Array.from({length:5},(_,i)=>({
+      rec: document.getElementById('ac-rec-'+(i+1)).value,
+      resp: document.getElementById('ac-resp-'+(i+1)).value,
+      fecha: document.getElementById('ac-fecha-'+(i+1)).value
+    })),
+    guardadoEn: new Date().toISOString()
+  };
+
+  // Guardar localmente
+  try {
+    const hist = JSON.parse(localStorage.getItem('bimfasa_ae')||'[]');
+    hist.unshift(rec);
+    localStorage.setItem('bimfasa_ae', JSON.stringify(hist.slice(0,200)));
+    renderHistorial();
+    renderDashboard();
+  } catch(e) {
+    alert('Error al guardar localmente: ' + e.message);
+    return;
+  }
+
+  // Enviar a Google Sheets
+  showAlert('⏳ Enviando a Google Sheets…', 'warn');
+  const ok = await enviarASheets(rec);
+  if (ok) {
+    showAlert('✓ Auditoría ' + folio + ' guardada y enviada a Google Sheets.', 'success');
+  } else {
+    showAlert('⚠ Guardada localmente. No se pudo enviar a Sheets (verifica conexión).', 'warn');
+  }
+}
+
+function showAlert(msg, type) {
+  const classes = {success:'alert-success',warn:'alert-warn',danger:'alert-danger'};
+  const div = document.createElement('div');
+  div.className = 'alert-box ' + classes[type];
+  div.textContent = msg;
+  document.querySelector('main').prepend(div);
+  setTimeout(()=>div.remove(), 3500);
+}
+
+// ── HISTORIAL ──
+function renderHistorial() {
+  const hist = JSON.parse(localStorage.getItem('bimfasa_ae')||'[]');
+  document.getElementById('hist-count').textContent = hist.length;
+  const cont = document.getElementById('historial-lista');
+  if (!hist.length) {
+    cont.innerHTML = '<div class="empty-state">Aún no hay auditorías guardadas.</div>';
+    return;
+  }
+  cont.innerHTML = hist.map((r,i)=>{
+    const chipClass = r.nivel==='seguro'?'ias-chip-s':r.nivel==='preventivo'?'ias-chip-p':'ias-chip-i';
+    const fechaFmt = r.fecha ? new Date(r.fecha+'T12:00:00').toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}) : r.fecha;
+    return `<div class="hist-item" onclick="verAuditoria(${i})">
+      <div>
+        <div class="hist-area">${r.depto}${r.area?' — '+r.area:''}</div>
+        <div class="hist-meta">${r.folio} · ${fechaFmt} · ${r.supervisor} · ${r.personas} personas</div>
+      </div>
+      <div class="hist-ias ${chipClass}">${r.ias}%</div>
+    </div>`;
+  }).join('');
+}
+
+function verAuditoria(idx) {
+  const hist = JSON.parse(localStorage.getItem('bimfasa_ae')||'[]');
+  const r = hist[idx];
+  if (!r) return;
+  alert(`Folio: ${r.folio}\nFecha: ${r.fecha}  Hora: ${r.hora}\nDepto: ${r.depto}\nSupervisor: ${r.supervisor}\nAuditor: ${r.auditor}\nPersonas: ${r.personas}\nIAS: ${r.ias}% (${r.nivel.toUpperCase()})\nAI×FS total: ${r.totalAIFS}`);
+}
+
+function exportarCSV() {
+  const hist = JSON.parse(localStorage.getItem('bimfasa_ae')||'[]');
+  if (!hist.length) { alert('No hay auditorías guardadas.'); return; }
+  const cols = ['folio','tipo','depto','area','fecha','hora','supervisor','auditor','personas','totalAIFS','ias','nivel'];
+  const rows = [cols.join(',')];
+  hist.forEach(r => rows.push(cols.map(c=>`"${r[c]??''}"`).join(',')));
+  const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'BIMFASA_AuditoriaEfectiva_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// ── NUEVA AUDITORÍA ──
+function nuevaAuditoria() {
+  if (!confirm('¿Iniciar una nueva auditoría? El formulario actual se limpiará.')) return;
+  document.getElementById('depto').value='';
+  document.getElementById('area').value='';
+  document.getElementById('supervisor').value='';
+  document.getElementById('auditor').value='';
+  document.getElementById('personas').value='';
+  document.getElementById('obs-generales').value='';
+  const now = new Date();
+  document.getElementById('fecha').value = now.toISOString().split('T')[0];
+  document.getElementById('hora').value = now.toTimeString().slice(0,5);
+  Object.keys(counters).forEach(k=>{ counters[k]=0; const el=document.getElementById('cnt-'+k); if(el) el.textContent='0'; });
+  CATEGORIAS.forEach(cat=>{ cat.items.forEach((_,ii)=>updateRowTotal(cat.id,ii)); document.getElementById('sub'+cat.id).textContent='AI·FS = 0'; });
+  for(let i=1;i<=5;i++){
+    document.getElementById('ai-desc-'+i).value='';
+    document.getElementById('ci-desc-'+i).value='';
+    document.getElementById('ac-rec-'+i).value='';
+    document.getElementById('ac-resp-'+i).value='';
+    document.getElementById('ac-fecha-'+i).value='';
+  }
+  setTipo('Interna');
+  calcIAS();
+  generarFolio();
+  showTab('encabezado');
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const hist = JSON.parse(localStorage.getItem('bimfasa_ae')||'[]');
+  const total = hist.length;
+  const prom = total ? (hist.reduce((s,r)=>s+r.ias,0)/total).toFixed(1) : '—';
+  const unsafe = hist.filter(r=>r.nivel==='inaceptable').length;
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-lbl">Auditorías totales</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:${prom<95?'var(--red)':prom<98?'var(--yellow)':'var(--green)'};">${prom}%</div><div class="stat-lbl">IAS promedio</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--red)">${unsafe}</div><div class="stat-lbl">Inaceptables</div></div>`;
+
+  const svg = document.getElementById('trend-svg');
+  const empty = document.getElementById('dash-empty');
+  if (hist.length < 2) {
+    svg.innerHTML=''; empty.style.display='block'; return;
+  }
+  empty.style.display='none';
+  const data = [...hist].reverse().slice(-20);
+  const W = svg.parentElement.clientWidth - 32 || 640;
+  const H = 120; svg.setAttribute('height', H+20);
+  const minV = Math.min(...data.map(r=>r.ias), 90);
+  const maxV = Math.max(...data.map(r=>r.ias), 100);
+  const range = maxV - minV || 10;
+  const xs = data.map((_,i)=> 30 + i * ((W-40)/(data.length-1)));
+  const ys = data.map(r=> H - ((r.ias - minV)/range)*(H-20) - 10);
+  const path = 'M ' + xs.map((x,i)=>`${x} ${ys[i]}`).join(' L ');
+  const fill = 'M ' + xs[0] + ' ' + H + ' L ' + xs.map((x,i)=>`${x} ${ys[i]}`).join(' L ') + ` L ${xs[xs.length-1]} ${H} Z`;
+  svg.innerHTML = `
+    <line x1="30" y1="0" x2="30" y2="${H}" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="30" y1="${H}" x2="${W}" y2="${H}" stroke="#e5e7eb" stroke-width="1"/>
+    <path d="${fill}" fill="#dbeafe" opacity="0.5"/>
+    <path d="${path}" fill="none" stroke="#1a4a7a" stroke-width="2" stroke-linejoin="round"/>
+    ${data.map((r,i)=>`
+      <circle cx="${xs[i]}" cy="${ys[i]}" r="4" fill="${r.nivel==='seguro'?'#1a7a3a':r.nivel==='preventivo'?'#b37d00':'#9b1c1c'}"/>
+      <title>${r.depto} ${r.fecha}: ${r.ias}%</title>
+    `).join('')}
+    <text x="0" y="${H}" font-size="9" fill="#9ca3af">${minV.toFixed(0)}%</text>
+    <text x="0" y="10" font-size="9" fill="#9ca3af">${maxV.toFixed(0)}%</text>
+  `;
+}
+
+// ── START ──
+init();
+</script>
+</body>
+</html>
